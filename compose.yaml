@@ -36,10 +36,12 @@ services:
     image: quay.io/oauth2-proxy/oauth2-proxy:v7.7.0
     env_file: oauth2-proxy.env
     environment:
+      OAUTH2_PROXY_OIDC_ISSUER_URL: ${KEYCLOAK_REALM_URL:-http://keycloak:8009/realms/hello}
+      OAUTH2_PROXY_SKIP_OIDC_DISCOVERY: "true"
+      OAUTH2_PROXY_LOGIN_URL: http://localhost:8009/realms/hello/protocol/openid-connect/auth
+      OAUTH2_PROXY_OIDC_JWKS_URL: http://keycloak:8009/realms/hello/protocol/openid-connect/certs
       OAUTH2_PROXY_CLIENT_ID: ${OAUTH2_PROXY_CLIENT_ID:-hello-oauth2-proxy}
       OAUTH2_PROXY_CLIENT_SECRET: ${OAUTH2_PROXY_CLIENT_SECRET:-weakkeycloakclientsecret}
-      OAUTH2_PROXY_OIDC_ISSUER_URL: ${KEYCLOAK_REALM_URL:-http://keycloak:8009/realms/hello}
-      OAUTH2_PROXY_LOGIN_URL: http://localhost:8009/realms/hello/protocol/openid-connect/auth
       OAUTH2_PROXY_REDIRECT_URL: http://localhost:8007/oauth2/callback
       OAUTH2_PROXY_COOKIE_SECRET:  ${OAUTH2_PROXY_COOKIE_SECRET:-weakcookiesecret}
       OAUTH2_PROXY_SESSION_STORE_TYPE: redis
