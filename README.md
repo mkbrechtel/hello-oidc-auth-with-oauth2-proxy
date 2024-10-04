@@ -22,4 +22,4 @@ docker-compose down
 docker-compose run --rm keycloak export --dir /opt/keycloak/data/import --realm hello
 ```
 
-This will update your local in keycloak/data/import.
+This will update your import files in keycloak/data/import.
