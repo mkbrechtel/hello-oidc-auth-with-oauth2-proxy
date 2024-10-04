@@ -1,0 +1,8 @@
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Containerfile
+    volumes:
+      - ./:/app
+    command: poetry run fastapi dev --host 0.0.0.0 webapp.py

@@ -6,6 +6,7 @@ authors = ["Markus Katharina Brechtel <markus.brechtel@uk-koeln.de>"]
 license = "Apache2"
 readme = "README.md"
 packages = [{include = "hello_oidc_auth_with_oauth2_proxy_and_python"}]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
