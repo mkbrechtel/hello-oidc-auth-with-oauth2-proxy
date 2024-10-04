@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hello-oidc-auth-with-oauth2-proxy-and-python"
+version = "0.1.0"
+description = ""
+authors = ["Markus Katharina Brechtel <markus.brechtel@uk-koeln.de>"]
+license = "Apache2"
+readme = "README.md"
+packages = [{include = "hello_oidc_auth_with_oauth2_proxy_and_python"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["standard"], version = "^0.115.0"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
