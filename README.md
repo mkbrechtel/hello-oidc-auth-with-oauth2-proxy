@@ -8,6 +8,11 @@ An example on how to implement OIDC Authentication with oauth2-proxy and Python.
 docker-compose up
 ```
 
+## Login
+Go to [localhost:8007](http://localhost:8007)
+
+Test user: `asdf` pass: `asdf`
+
 ## Services
 
 - [FastAPI App (without auth)](http://localhost:8000)
