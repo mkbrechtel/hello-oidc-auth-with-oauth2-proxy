@@ -1,11 +1,14 @@
 services:
-  webapp:
-    build:
-      context: .
-      dockerfile: Containerfile
-    volumes:
-      - ./:/app
-    command: poetry run fastapi dev --host 0.0.0.0 webapp.py
+  # webapp:
+  #   build:
+  #     context: .
+  #     dockerfile: Containerfile
+  #   volumes:
+  #     - ./:/app
+  #   command: poetry run fastapi dev --host 0.0.0.0 webapp.py
+  #   depends_on:
+  #     keycloak:
+  #       condition: service_healthy
   keycloak:
     image: quay.io/keycloak/keycloak:26.0
     ports:
@@ -24,7 +27,35 @@ services:
       - ./keycloak/data/import/:/opt/keycloak/data/import/
     command: start-dev --import-realm
     healthcheck:
-      test: set -e && exec 3<>/dev/tcp/localhost/8009 && echo -e GET /health/ready HTTP/1.0 >&3 && echo >&3 && timeout --preserve-status 1 cat <&3 | grep -m 1 status | grep -m 1 UP
+      test: set -e && exec 3<>/dev/tcp/localhost/9000 && echo -e GET /health/ready HTTP/1.0 >&3 && echo >&3 && timeout --preserve-status 1 cat <&3 | grep -m 1 status | grep -m 1 UP
       interval: 10s
       timeout: 5s
       retries: 10
+
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.7.0
+    env_file: oauth2-proxy.env
+    environment:
+      OAUTH2_PROXY_CLIENT_ID: ${OAUTH2_PROXY_CLIENT_ID:-hello-oauth2-proxy}
+      OAUTH2_PROXY_CLIENT_SECRET: ${OAUTH2_PROXY_CLIENT_SECRET:-weakkeycloakclientsecret}
+      OAUTH2_PROXY_OIDC_ISSUER_URL: ${KEYCLOAK_REALM_URL:-http://keycloak:8009/realms/hello}
+      OAUTH2_PROXY_LOGIN_URL: http://localhost:8009/realms/hello/protocol/openid-connect/auth
+      OAUTH2_PROXY_REDIRECT_URL: http://localhost:8007/oauth2/callback
+      OAUTH2_PROXY_COOKIE_SECRET:  ${OAUTH2_PROXY_COOKIE_SECRET:-weakcookiesecret}
+      OAUTH2_PROXY_SESSION_STORE_TYPE: redis
+      OAUTH2_PROXY_REDIS_CONNECTION_URL: redis://oauth2-proxy-cache
+      OAUTH2_PROXY_REDIS_PASSWORD: ${OAUTH2_PROXY_REDIS_PASSWORD:-weakredispassword}
+    ports:
+      - "8007:4180"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      oauth2-proxy-cache:
+        condition: service_started
+
+  oauth2-proxy-cache:
+    image: redis:6.2-alpine
+    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${OAUTH2_PROXY_REDIS_PASSWORD:-weakredispassword}
+    # volumes:
+    #   - oauth2-proxy-cache:/data

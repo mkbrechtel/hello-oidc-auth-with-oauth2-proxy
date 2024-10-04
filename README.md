@@ -8,7 +8,8 @@ An example on how to implement OIDC Authentication with oauth2-proxy and Python.
 docker-compose up
 ```
 
-## Keycloak
+## Services
 
-Runs at http://localhost:8009
+- Keycloak http://localhost:8009
+- oauth2-proxy http://localhost:8007
 
