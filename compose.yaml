@@ -6,3 +6,25 @@ services:
     volumes:
       - ./:/app
     command: poetry run fastapi dev --host 0.0.0.0 webapp.py
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    ports:
+      - "8009:8009"
+    environment:
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+      # local database for testing
+      DB_VENDOR: "h2"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HTTP_ENABLED: "true"
+      KC_HTTP_PORT: "8009"
+      KC_HEALTH_ENABLED: "true"
+    volumes:
+      - ./keycloak/data/import/:/opt/keycloak/data/import/
+    command: start-dev --import-realm
+    healthcheck:
+      test: set -e && exec 3<>/dev/tcp/localhost/8009 && echo -e GET /health/ready HTTP/1.0 >&3 && echo >&3 && timeout --preserve-status 1 cat <&3 | grep -m 1 status | grep -m 1 UP
+      interval: 10s
+      timeout: 5s
+      retries: 10
