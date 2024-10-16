@@ -28,7 +28,7 @@ Test user: `asdf` pass: `asdf`
 To update the keycloak realm configuration, you can use the keycloak admin cli.
 ```
 chmod -R a+rwX keycloak/data/import/
-docker-compose down
+docker-compose down --remove-orphans
 docker-compose run --rm keycloak export --dir /opt/keycloak/data/import --realm hello
 ```
 
