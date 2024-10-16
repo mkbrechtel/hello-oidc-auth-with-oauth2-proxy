@@ -335,7 +335,24 @@
       } ]
     }
   },
-  "groups" : [ ],
+  "groups" : [ {
+    "id" : "abd9cd78-c14b-43b1-b479-8a636ee6aba2",
+    "name" : "hello",
+    "path" : "/hello",
+    "subGroups" : [ {
+      "id" : "0194b519-ea82-469c-9460-2472314c6b33",
+      "name" : "ohai",
+      "path" : "/hello/ohai",
+      "parentId" : "abd9cd78-c14b-43b1-b479-8a636ee6aba2",
+      "subGroups" : [ ],
+      "attributes" : { },
+      "realmRoles" : [ ],
+      "clientRoles" : { }
+    } ],
+    "attributes" : { },
+    "realmRoles" : [ ],
+    "clientRoles" : { }
+  } ],
   "defaultRole" : {
     "id" : "0f2741d9-e232-421e-ae79-feb2193c8015",
     "name" : "default-roles-hello",
@@ -1265,7 +1282,7 @@
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-user-property-mapper", "oidc-full-name-mapper", "oidc-usermodel-attribute-mapper", "oidc-usermodel-property-mapper", "oidc-address-mapper", "saml-user-attribute-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-user-attribute-mapper", "oidc-usermodel-property-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-full-name-mapper", "oidc-usermodel-attribute-mapper", "saml-user-property-mapper", "oidc-address-mapper", "saml-role-list-mapper" ]
       }
     }, {
       "id" : "51acb8bc-e5e1-4fb2-93da-448f4921cc9e",
@@ -1307,7 +1324,7 @@
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-usermodel-attribute-mapper", "oidc-usermodel-property-mapper", "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-user-attribute-mapper", "oidc-address-mapper", "saml-user-property-mapper", "oidc-full-name-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-address-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-attribute-mapper", "oidc-usermodel-property-mapper", "saml-role-list-mapper", "oidc-full-name-mapper" ]
       }
     } ],
     "org.keycloak.keys.KeyProvider" : [ {

@@ -22,6 +22,6 @@
     "requiredActions" : [ ],
     "realmRoles" : [ "default-roles-hello" ],
     "notBefore" : 0,
-    "groups" : [ ]
+    "groups" : [ "/hello", "/hello/ohai" ]
   } ]
 }
