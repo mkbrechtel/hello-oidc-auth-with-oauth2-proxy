@@ -1,16 +1,5 @@
 services:
 
-  # webapp:
-  #   build:
-  #     context: .
-  #     dockerfile: Containerfile
-  #   volumes:
-  #     - ./:/app
-  #   command: poetry run fastapi dev --host 0.0.0.0 webapp.py
-  #   depends_on:
-  #     keycloak:
-  #       condition: service_healthy
-
   keycloak:
     image: quay.io/keycloak/keycloak:26.0
     ports:

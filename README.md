@@ -1,11 +1,11 @@
-# Hello OIDC Authentication with oauth2-proxy and Python!
+# Hello OIDC Authentication with oauth2-proxy!
 
-An example on how to implement OIDC Authentication with oauth2-proxy and Python.
+An example on how to implement OIDC Authentication with oauth2-proxy and different Apps/Frameworks.
 
 ## Setup
 
 ```
-docker-compose up
+docker-compose -f compose.yaml -f compose.fastapi.yaml up
 ```
 
 ## Login

@@ -1,0 +1,17 @@
+services:
+  oauth2-proxy:
+    environment:
+      OAUTH2_PROXY_UPSTREAMS: http://fastapi:8000
+    depends_on:
+      fastapi:
+        condition: service_started
+  fastapi:
+    build:
+      context: fastapi
+      dockerfile: Containerfile
+    volumes:
+      - ./fastapi/:/app
+    command: poetry run fastapi dev --host 0.0.0.0 webapp.py
+    depends_on:
+      keycloak:
+        condition: service_healthy
