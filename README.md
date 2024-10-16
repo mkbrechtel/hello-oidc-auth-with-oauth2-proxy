@@ -2,11 +2,13 @@
 
 An example on how to implement OIDC Authentication with oauth2-proxy and different Apps/Frameworks.
 
-## Setup
+## Run!
 
-```
-docker-compose -f compose.yaml -f compose.fastapi.yaml up
-```
+To choose one of the different app setups run:
+- FastAPI: `make app=fastapi`
+- [whoami test service](https://github.com/traefik/whoami): `make app=whoami`
+
+Then go to http://localhost:4180
 
 ## Login
 Go to [localhost:8007](http://localhost:8007)
@@ -15,12 +17,11 @@ Test user: `asdf` pass: `asdf`
 
 ## Services
 
-- [FastAPI App (without auth)](http://localhost:8000)
 - [Keycloak](http://localhost:8009)
-- [oauth2-proxy](http://localhost:8007)
-    - [userinfo](http://localhost:8007/oauth2/userinfo)
-    - [sign in](http://localhost:8007/oauth2/sign_in)
-    - [sign out](http://localhost:8007/oauth2/sign_out?rd=http://localhost:8009/realms/hello/protocol/openid-connect/logout)
+- [oauth2-proxy](http://localhost:4180)
+    - [userinfo](http://localhost:4180/oauth2/userinfo)
+    - [sign in](http://localhost:4180/oauth2/sign_in)
+    - [sign out](http://localhost:4180/oauth2/sign_out?rd=http://localhost:8009/realms/hello/protocol/openid-connect/logout)
 
 ## Development
 

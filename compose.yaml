@@ -28,7 +28,7 @@ services:
     image: quay.io/oauth2-proxy/oauth2-proxy:v7.7.0
     env_file: oauth2-proxy.env
     ports:
-      - "8007:4180"
+      - "4180:4180"
     depends_on:
       keycloak:
         condition: service_healthy

@@ -1,0 +1,9 @@
+services:
+  oauth2-proxy:
+    environment:
+      OAUTH2_PROXY_UPSTREAMS: http://whoami
+    depends_on:
+      whoami:
+        condition: service_started
+  whoami:
+    image: docker.io/traefik/whoami
