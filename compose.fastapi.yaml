@@ -9,9 +9,11 @@ services:
     build:
       context: fastapi
       dockerfile: Containerfile
+      target: env
     volumes:
       - ./fastapi/:/app
-    command: poetry run fastapi dev --host 0.0.0.0 webapp.py
+    env_file: app.env
+    command: fastapi dev --host 0.0.0.0 webapp.py
     depends_on:
       keycloak:
         condition: service_healthy

@@ -1,6 +1,11 @@
-FROM docker.io/python:3.11
+FROM docker.io/python:3.11 as env
 
-RUN pip install poetry
 WORKDIR /app
-COPY pyproject.toml poetry.lock ./
-RUN poetry install
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# FROM env as app
+
+# COPY . .
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
