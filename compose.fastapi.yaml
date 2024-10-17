@@ -13,7 +13,6 @@ services:
     volumes:
       - ./fastapi/:/app
     env_file: app.env
-    command: fastapi dev --host 0.0.0.0 webapp.py
     depends_on:
       keycloak:
         condition: service_healthy
