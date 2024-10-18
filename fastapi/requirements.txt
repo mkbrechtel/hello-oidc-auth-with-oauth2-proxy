@@ -1,3 +1,4 @@
 fastapi[standard]==0.115.0
 pyjwt==2.9.0
 cryptography==43.0.1
+requests==2.32.3

@@ -2,14 +2,38 @@ import os
 import jwt
 from jwt import PyJWKClient
 from flask import request, g, abort
+import requests
 
-# OIDC Provider details (example using Auth0)
-OIDC_ISSUER = os.getenv('APP_OIDC_ISSUER_URL')
-OIDC_JWKS_URL = os.getenv('APP_OIDC_JWKS_URL')
-OIDC_AUDIENCE = os.getenv('APP_OIDC_AUDIENCE')
+if "OIDC_ISSUER_URL" in os.environ:
+    OIDC_ISSUER_URL = os.getenv('OIDC_ISSUER_URL')
+    print("OIDC_ISSUER_URL", OIDC_ISSUER_URL)
 
-# Fetch and cache JWKS (public keys)
-jwks_client = PyJWKClient(OIDC_JWKS_URL)
+    OIDC_ISSUER_CONFIG_URL = f"{OIDC_ISSUER_URL}/.well-known/openid-configuration"
+    OIDC_CONFIG = requests.get(OIDC_ISSUER_CONFIG_URL).json()
+    print("OIDC_CONFIG",OIDC_CONFIG)
+
+if "JWKS_URL" in os.environ:
+    JWKS_URL = os.getenv('JWKS_URL')
+else:
+    JWKS_URL = OIDC_CONFIG["jwks_uri"]
+print("JWKS_URL", JWKS_URL)
+
+if "OAUTH_TOKEN_ISSUER" in os.environ:
+    OAUTH_TOKEN_ISSUER = os.getenv('OAUTH_TOKEN_ISSUER')
+else:
+    OAUTH_TOKEN_ISSUER = OIDC_CONFIG["issuer"]
+print("OAUTH_TOKEN_ISSUER",OAUTH_TOKEN_ISSUER)
+
+OAUTH_TOKEN_AUDIENCE = os.getenv('OAUTH_TOKEN_AUDIENCE')
+print("OAUTH_TOKEN_AUDIENCE", OAUTH_TOKEN_AUDIENCE)
+
+if "OAUTH_TOKEN_JWT_ALGOS" in os.environ:
+    OAUTH_TOKEN_JWT_ALGOS = os.getenv("OAUTH_TOKEN_JWT_ALGOS").split(",")
+else:
+    OAUTH_TOKEN_JWT_ALGOS = OIDC_CONFIG["id_token_signing_alg_values_supported"]
+print("OAUTH_TOKEN_JWT_ALGOS",OAUTH_TOKEN_JWT_ALGOS)
+
+jwks_client = PyJWKClient(JWKS_URL)
 
 def token_required(f):
     def decorator(*args, **kwargs):
@@ -20,14 +44,13 @@ def token_required(f):
         token = authorization[len("Bearer "):]  # Extract the token after "Bearer "
         
         try:
-            # Verify and decode the token
             signing_key = jwks_client.get_signing_key_from_jwt(token)
             decoded_token = jwt.decode(
                 token,
                 signing_key.key,
-                algorithms=["RS256"],
-                audience=OIDC_AUDIENCE,
-                issuer=OIDC_ISSUER
+                algorithms=OAUTH_TOKEN_JWT_ALGOS,
+                audience=OAUTH_TOKEN_AUDIENCE,
+                issuer=OAUTH_TOKEN_ISSUER
             )
         except jwt.ExpiredSignatureError:
             abort(401, description="Token has expired")
