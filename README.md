@@ -6,6 +6,7 @@ An example on how to implement OIDC Authentication with oauth2-proxy and differe
 
 To choose one of the different app setups run:
 - FastAPI: `make app=fastapi`
+- Flask: `make app=flask`
 - [whoami test service](https://github.com/traefik/whoami): `make app=whoami`
 
 Then go to http://localhost:4180
